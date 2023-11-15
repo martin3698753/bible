@@ -3,9 +3,24 @@
 #include <string>
 #include <vector>
 
-#define NUM_BOOKS 31102
-
 using namespace std;
+
+vector<string> splitLine(string s)
+{
+	vector<string> ret_str;
+	size_t pos;
+	string token;
+	pos = s.find(" ");
+	token = s.substr(0, pos);
+	ret_str.push_back(token);
+	s.erase(0, pos + 1);
+	pos = s.find("\t");
+	token = s.substr(0, pos);
+	ret_str.push_back(token);
+	s.erase(0, pos + 1);
+	ret_str.push_back(s);
+	return ret_str;
+}
 
 vector<string> getBooks()
 {
@@ -30,10 +45,7 @@ vector<string> getBooks()
 int main()
 {
 	vector<string> books = getBooks();
-	cout << books[0] << endl;
-	/*for(int i = 0; i < NUM_BOOKS; i++)
-	{
-		cout << books[i] << endl;
-	}
-	return 0;*/
+	vector<string> line = splitLine(books[0]);
+	cout << line[2] << endl;
+	return 0;
 }
