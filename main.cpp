@@ -2,6 +2,9 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <cstdlib>
+#include <ctime>
+#include <filesystem>
 
 using namespace std;
 
@@ -42,10 +45,54 @@ vector<string> getBooks()
 	return books;
 }
 
+void make_dir(string book)
+{
+	namespace fs = std::filesystem;
+	char* path = getenv("HOME");
+	if (path == nullptr)
+	{
+		cerr << "ERROR: Home variable not set" << endl;
+	}
+
+	fs::path biblePath(path);
+	biblePath /= ".config/bible/";
+
+	if (!fs::exists(biblePath))
+	{
+		if(fs::create_directory(biblePath))
+		{
+			cout << "Created directory: " << biblePath << endl;
+		}
+		else
+		{
+			cerr << "Error while creating directory: " << biblePath << endl;
+		}
+	}
+
+	biblePath /= book;
+
+	if (!fs::exists(biblePath))
+	{
+		if(fs::create_directory(biblePath))
+		{
+			cout << "Created directory: " << biblePath << endl;
+		}
+		else
+		{
+			cerr << "Error while creating directory: " << biblePath << endl;
+		}
+	}
+}
+
 int main()
 {
+	srand((unsigned)time(0));
 	vector<string> books = getBooks();
-	vector<string> line = splitLine(books[0]);
-	cout << line[2] << endl;
+	cout << books[7] << endl;
+	//for (int i = 0; i < books.size(); i++)
+	//{
+	//	vector<string> line = splitLine(books[i]);
+	//	make_dir(line[0]);
+	//}
 	return 0;
 }
